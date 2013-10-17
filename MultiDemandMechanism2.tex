@@ -1,0 +1,810 @@
+
+%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage{setspace}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\newtheorem{definition}{Definition}
+\newtheorem{notation}{Notation}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}
+\providecommand{\algorithmname}{Algorithm}
+\floatname{algorithm}{\protect\algorithmname}
+
+\makeatother                                                                              
+
+\usepackage{babel}
+\doublespacing
+
+
+\begin{document}
+
+\title{Multi-Demand Allocations (formal model)}
+
+\maketitle
+\emph{Model setting}: Let N be a set of n players and $V^R=(R,...,R)$ be a set of $K$ initial resources of a central resource provider who wishes to allocate the resources between the players. Each player $i$ has a set of $M$ demand vectors $D_{i}=(d_{i,1},...,d_{i,M})$, such that each vector $d_{i}\in D_{i}$ is a over the simplex space, i.e., $\sum_{r}d_{i}^{r}=1$. 
+After allocating the resources each player $i$ is associated with a
+vector $c_{i}=(c_{i}^{1},...,c_{i}^{K})$, where $c_{i}^{r}$ is the
+amount of the $r$'s resource player $i$ received in the allocation. We
+call the vector $c_{i}$ \emph{i-allocation}. Let $c=\sum c_{i}$
+be the vector that represent the resource consumption by all players
+and $c^{r}$ be the total consumption of resource r. 
+ 
+\begin{definition}  
+Let $\mathbb{D}_{i}$ be the set of all possible
+demands of player i and let $C_{i}$ be the set of all possible i-allocations.
+The function $MDA:\prod_{i}\mathbb{D}_{i}\longrightarrow\prod_{i}C_{i}$
+is a set of \emph{Multi-demand allocation} mechanisms which allocate
+the resources between the players according to their of demands $d_{1},...,d_{n}$
+such that each player $i$ gets $c_{i}$. 
+\end{definition}
+
+\begin{definition}  A \emph{bundle of player i}, denoted by $B_{i}$,
+is the set of linear combinations over $d_{i}$, i.e., $B_{i}=\left\{ \sum_{j=1}^{l}\alpha_{j}d_{ij}|\alpha_{j}\geq 0,d_{ij}\in d_{i}\right\} $. 
+\end{definition}
+
+\begin{definition}  \emph{A bundle of player i with respect to $T$,
+}denoted $B_{i}|_{T}$\emph{ }is the set of all bundles of player
+i such that for every $b\in B_{i}|_T$ each quantity $b^{r}$ is upper
+bounded by $T^{r}$. Formally,$B_{i}|_{T}=\left\{ b\in B_{i}|b^{r}\leq T^{r},\ 1\leq r\leq K\right\} $. 
+\end{definition}
+
+\begin{definition}\label{defU}  The \emph{utility} $U_{i}^{f}(T)$ of player
+$i$ with respect to monotone function $f$ is $Max_{b\in B_{i}|_{T}}f(b)$
+, i.e., the maximum value of f over all bundles of player $i$ with
+respect to T. Formally, $U_{i}^{f}(T)$ can be also described as linear
+programming:
+
+\begin{eqnarray*}
+\max_{\alpha_{1},\alpha_{2},...,\alpha_{n}} & f(\sum_{j}\alpha_{j}d_{ij})\\
+s.t. & \sum_{j}\alpha_{j}d_{ij}^{r}\leq T^{r} & \ 1\leq r\leq K\\
+ & \alpha_{j}\geq0 & \forall j
+\end{eqnarray*}
+\end{definition}
+ 
+
+Two important examples in our case:
+\begin{enumerate}
+\item $f=norm_{1}$ can be described by the following
+linear programming:
+\begin{eqnarray*}
+\max_{\alpha_{1},\alpha_{2},...,\alpha_{n}} & \sum_{r}\sum_{j}\alpha_{j}d_{ij}^{r}\\
+s.t. & \sum_{j}\alpha_{j}d_{ij}^{r}\leq T^{r} & \ 1\leq r\leq K\\
+ & \alpha_{j}\geq0 & \forall j
+\end{eqnarray*}
+
+\item $f=norm_{\infty}$ attempts to maximize the
+dominant resource: 
+\end{enumerate}
+
+\begin{eqnarray*}
+\max_{\alpha_{1},\alpha_{2},...,\alpha_{n}} & \max_{r}(\sum_{j}\alpha_{j}d_{ij}^{r})\\
+s.t. & \sum_{j}\alpha_{j}d_{ij}^{r}\leq T^{r} & \ 1\leq r\leq K\\
+ & \alpha_{j}\geq0 & \forall j
+\end{eqnarray*}
+
+
+\begin{definition}  A mechanism is called\emph{ f-fair }if its allocation
+maximizes the utility of the poorest player. Formally, mechanism $M\in MDA$
+is f-fair if for every $M'\in MDA$ we have $min_{i}(U_{i}^{f}(M(D_{1},...,D_{n})))\geq min_{i}(U_{i}^{f}(M'(D_{1},...D_{n})).$
+\end{definition}
+
+\emph{Objective}: We aim to find $f$-fair mechanisms that satisfy
+$incentive sharing$, $Pareto optimality$, $envyfree$, and most important,
+strategy proof
+
+\begin{definition} Let $M\in MDA$ and $(c_{1},...,c_{n})=M(d_{1},...,d_{n}).$. Resource
+$j$ is called \emph{bottleneck} in M if $\sum_{i}c_{i}^{j}=R$.
+\end{definition}
+
+
+\begin{notation} 
+We denote the $j$'s entry of vector v by $v^{j}$.
+\end{notation}
+
+
+\begin{notation} 
+Let $Dom(d_{i})$ denote the dominant resource in $d_{i}$
+\end{notation}
+
+
+\begin{notation} 
+Let $Minor(d_{i})$ denote the smallest quantity resource in $d_{i}$.
+\end{notation}
+
+
+
+\begin{notation} 
+(Gutman, Nisan) For $x,z\in\mathbb{R}^{K}$ we write $x\leq z$
+if $\forall j$ $x_{j}\leq z_{j}$.
+\end{notation}
+
+\begin{notation} 
+(Gutman, Nisan) For $x,z\in\mathbb{R}^{K}$ we write $x<z$
+if $x\leq z$ and for some j we have strict inequality $x_{j}<z_{j}$.
+\end{notation}
+
+\begin{definition}
+We define the projection function $\pi_i:\Delta\longleftrightarrow\Delta$, where $v_i=\pi_i(v_1,...,v_k)$.
+\end{definition}
+
+
+\begin{definition} (Gutman, Nisan): A vector x is called \emph{parsimonious}
+for player $i$ if for all z < x we have that $U_{i}^{f}(z)<U_{i}^{f}(x)$.
+\end{definition}
+
+\begin{definition} (Gutman, Nisan): An allocation is called \emph{parsimonious
+allocation} w.r.t utility functions $U_{1}^{f},...,U_{n}^{f}$ if
+each $x_{i}$ is parsimonious vector w.r.t to $U_{i}^{f}$.
+\end{definition}
+
+\begin{definition}
+The predicate $Par_{i}:\Delta^{k}\rightarrow\{0,1\}$ is true, (i.e.,
+$Par_{i}(x)=1$), if and only if, x is parsimonious for player i.
+\end{definition}
+
+\begin{definition}  Let $VPar_{i}:2^{\Delta^{k}}\rightarrow\{0,1\}$ be a predicate defined for player i, such that $VPar_{i}=1$
+ if and only if there is a convex combination of player i's demand vectors 
+that is \emph{parsimonious}. Formally,
+for $S_{i}\subseteq D_{i}$, we have $VPar(S_{i})=1$ if and only if there
+are $\alpha_{1},\alpha_{2},...,\alpha_{|S|}$ in which $x=\sum_{d_{ij}\in S_{i}}\alpha_{j}d_{ij}$
+is parsimonious. Note that if $S_{i}=D_{i}$ then $VPar_{i}(S_{i})=Par_{i}(S_{i})$
+(The predicates are identical if the input contains the whole demand set)
+\end{definition}
+
+\begin{definition}
+Let $MaxPar_i:\Delta^k \longrightarrow \Delta^{k}$ be a function that gets a quantity q and returns the parsimonious vector of player i that attains the maximum utility . Formally, $MaxPar^r_i(q)=x$ where
+\begin{eqnarray*}
+x=& \max \limits_{\alpha_{1},\alpha_{2},...,\alpha_{n}} & \sum_{j}\alpha_{j}d_{ij}^{r}\\
+s.t. &\sum_{j}\alpha_{j}d_{ij}^{l}\leq q^r & \forall r\\
+ 	 &\alpha_{j}\geq0 & \forall j
+\end{eqnarray*}
+\end{definition}
+
+\begin{definition}
+Given that there are only two types of resources in the universe, the function $CompTwo_i:\Delta\longrightarrow \Delta$ maps a quantity of one resource to the second quantity such that the two quantities form a vector that is parsimonious for player i and attains him the maximum utility where the first resource quantity is fixed. Formally, for a given first resource quantity $q_1$ for player i we have $CompTwo_i(q_1)=\pi_2(MaxPar^1_i(q_1))$.
+\end{definition}
+
+
+
+\begin{definition}
+In MDA mechanisms, each player's report of a demand vector is categorized into several types of reports (not necessarily complementary):
+\begin{itemize}
+\item Truthful report. The player reports his demand vectors truthfully.
+\item Misreport that does not change the preferences of the vectors. This is "light" misreport signifying that if a player has a vector $d_i$ such that $d_i^{r1}\geq d_i^{2r}\geq ...\geq d_i^{rk}$ then he misreports $d^{'}_i$ such that $d_i^{'r1}\geq d_i^{'2r}\geq ...\geq d_i^{'rk}$. Namely, if $r1$ is the largest resource (dominant) in $d_i$, then it is also the largest in the misreport vector $d'_i$. Similarly, if $r2$ is the second largest resource in $d_i$, then it is reflected as the second preferred resource as well, etc. This misreport is called misreport-A. 
+\item Misreport that changes preferences. This is the complement of misreport-A. This misreport is called misreport-B.
+\item Parsimonious misreport (PM). Let $D$ be the set of the true demand vectors. A PM-misreport $D'\neq D$ is set of vectors in which each vector is linearly dependents on $D$.
+\item Non Parsimonious misreport (NPM). Let $D$ be the set of the true demand vectors. An NPM misreport $D'\neq D$ is set of vectors in which at least one vector is linearly independent of $D$.
+\end{itemize} 
+\end{definition}
+
+
+
+
+\section{M-2-m-n: 2 players, m vectors, and k resources within each vector}
+\begin{algorithm}\label{alg2}
+M-2-m-k$(D_{1},D_{2})$ 
+\begin{eqnarray*}
+(\alpha_{1}^{*},...,\alpha_{m}^{*},\alpha_{1}^{*},...,\alpha^{'*}_{m})&\leftarrow \arg\max_{\alpha_{1},...,\alpha_{m},\alpha^{'}_{1},...,\alpha^{'}_{m}}  Z\\
+s.t. & \sum_{j=1}^{m}\alpha_{j}d_{1j}^{r}+\sum_{j=1}^{k}\alpha^{'}_{j}d_{2j}^{r}\leq R & \ 1\leq r\leq K\\
+ & \sum_{r=1}^{k}\sum_{j=1}^{m}\alpha_{j}d_{1j}^{r}\geq Z\\
+ & \sum_{r=1}^{k}\sum_{j=1}^{m}\alpha^{'}_{j}d_{2j}^{r}\geq Z\\
+ & \alpha_{j}\geq0 & \forall j\\
+ & \alpha'_{j}\geq0 & \forall j'
+\end{eqnarray*}
+$U_{1}\leftarrow\sum_{r=1}^{k}\sum_{j=1}^{m}\alpha_{j}^{*}d_{1j}^{r}$ 
+,$U_{2}\leftarrow\sum_{r=1}^{k}\sum_{j=1}^{m}\alpha_{j}^{'*}d_{2j}^{r}$
+\end{algorithm}
+
+
+\begin{algorithm}\label{alg3}
+Note that the LP of M-2-m-k is equivalent to the following program: 
+\begin{eqnarray}
+\max_{\alpha_{1},...,\alpha_{m},\alpha'_{1},...,\alpha'_{m}}Min & (\sum_{r=1}^{k}\sum_{j=1}^{m}\alpha_{j}d_{1j}^{r},\sum_{r=1}^{k}\sum_{j=1}^{m}\alpha'_{j}d_{2j}^{r}) & s.t.\nonumber\\
+ &\sum_{j=1}^{m}\alpha_{j}d_{1j}^{r}=T^{r} & 1\leq r\leq K\nonumber \\
+ &\sum_{j=1}^{m}\alpha'_{j}d_{2j}^{r}=T^{'r} & 1\leq r\leq K\nonumber \\
+ & T^{r}+T'^{r}\leq R\nonumber 
+\end{eqnarray}
+\end{algorithm}
+
+
+\begin{lemma}\label{lemma1}: Given that M-2-m-k allocates resources such that $U_{1}<U_{2}$ then  $U_{1}=U_{1}^{1}(R)$. Namely, if under M-2-m-k player 1 is the "poor" player, then his utility is independent of the consumption of player 2 (the demands of player 2 has not effect on the utility of player 1). 
+\end{lemma}
+
+\begin{proof} 
+First note that algorithm \ref{alg2} finds the
+allocation (the demand vector weights) that maximizes $Min(U_{1},U_{2})$. Since the objective
+function of program \ref{alg3} and its constraints are tighter than in $U_{1}^{1}(R)$, we have $U_{1}\leq U_{1}^{1}(R)$. By contradiction assume a strict
+inequality $U_{1}^{1}(R)>U_{1}$. The assumption implies that if player 1 would somehow obtain more resources than the original M-2-m-k allocation (up to the limit R), then he would increase his own utility. From assumption, there is a vector  $S>0$ of resource quantities such that if player 2 would transfer resources to player 1 with quantities defined by S, then the utility of player
+1 would increase. Formally, let $T=(T^{1},...,T^{k})$ and $T'=(T'^{1},...,T'^{k})$
+be the constraints on the resources of players 1 and player 2 respectively
+,as described in program \ref{alg3}. Given that all players report their true demand vectors, the utility of player 1 under M-2-m-k is $U_{1}^{1}(T)$
+and the utility of player 2 is $U_{2}^{1}(T')$. Wlog, let $S=(S^{1},...,S^{k})$ be a vector of quantities 
+and assume that player 2 transfers resource quantities defined by $S$ to player 1 such that its current utility becomes $\tilde{U_{1}}=U_{1}^{1}(T+S)$ and the utility of player 2 becomes $\tilde{U_{2}}=U_{2}^{1}(T'-S)$. Clearly, $\tilde{U_{1}}>U_{1}$ and $\tilde{U_{2}}<U_{2}$. Since the utility functions are continuous,
+there exists $\delta>0$ such that if player 2 transfers $\delta\cdot S$ to  player 1 (instead of S as described before), then after
+the transfer we will have $\tilde{U_{2}^{\delta}}>U_{1}$, where $\tilde{U_{2}^{\delta}}$ denotes the new utility $U_{2}^{1}(T'-\delta S)$ of player 2 (and $\tilde{U_{1}^{\delta}}$ denotes the new utility of player 1 $U_{1}^{1}(T+\delta S)$). Namely, if player 2
+transfers a sufficiently small quantity of resources to player 1, then
+he still has a greater utility than that of player 1 before the transfer.  Since $\tilde{U_{1}^{\delta}}>U_1$, we get $Min(U_{1},U_{2})=U_{1}<Min(\tilde{U_{1}^{\delta}},\tilde{U_{2}^{\delta}})$. However, this is impossible since M-2-m-k finds the allocation of vectors
+that \emph{maximizes} $Min(U_{1},U_{2})$. Thus, we get a contradiction
+to the assumption that $U_{1}^{1}(R)>U_{1}$.
+\end{proof}
+
+\begin{corollary} 
+M-2-m-k is max-min fair. 
+\end{corollary}
+
+\begin{proof}  Let player 1 be the \textbf{"poor"} and player 2 be the \textbf{"rich"}. By lemma \ref{lemma1}, $U_{1}=U_{1}^{1}(R)$. Therefore, player 1 gains the maximum utility under the loosest constraints that the total consumption of each resources is not greater then R (as seen by the LP). Thus, M-2-m-k is\textbf{ maxmin fair}.
+\end{proof}
+
+\begin{lemma} 
+M-2-m-n is \textbf{strategy proof}
+\end{lemma}
+
+\begin{proof} Let player 1 be the "poor" player and player 2 be the "rich" player assuming that the players announce their true demands to M-2-m-k. In the case that player 2 reports his true demands then player 1 has no incentive to misreport since he gains the maximum utility independent of the consumption of player 2. The only possible manipulation for player 2 to gain more resources is to "become" the "poor" player, but then his utility has to decrease to a level that it is less than player 1's utility, which is not a rational decision. 
+\end{proof}
+
+\subsection{M-n-m-k:n players, m vectors, and k resources within each vector}
+\begin{algorithm}
+\caption{M-n-m-k $(D_{1},D_{2},...,D_{n})$}
+\label{alg4}
+For all i define $a_i=(a_{i1},...,a_{ik})$.
+\begin{eqnarray*}
+Find (a_{1}^{*},...,a_{n}^{*}) \leftarrow \arg\max_{a_{1},...,a_{n}}  Z\\
+s.t. \quad \sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}d_{ij}^{r} \leq R & \ 1\leq r\leq K\\
+  \sum_{r=1}^{k}\sum_{j=1}^{m}a_{ij}d_{ij}^{r}\geq Z & \ 1\leq i \leq n\\
+  0 \leq a_{ij} \leq 1 & \forall i,j\\
+\end{eqnarray*}
+$U_{i}\leftarrow\sum_{r=1}^{k}\sum_{j=1}^{m}\alpha_{j}^{*}d_{ij}^{r}\quad 1\leq i \leq n$ 
+\end{algorithm}
+
+\begin{lemma}\label{lemma2}
+The utility of a player is independent of the consumption of a player richer than him.
+\end{lemma}
+
+
+
+
+\begin{proof}
+By contradiction, assume that player $p_i$ is affected by the consumption of a subset $P_j\subseteq Richer_i(D)$ of players "richer than $i$".
+Suppose that every player $j\in P_j$ transfers a resource vector $s_j=s_j^1,...,s_j^K$ to player $i$ then the sum $\sum_{i=1}^{k}{S_i}$  is also continuous (clearly this also holds for any partial sum) and thus there are $\delta_1,...,\delta_k$ such that when all the players transfer to player $p_r$ $\sum_{i=1}^{k}{\delta_i S_i}$ player $p_r$ is still the "poorer" than all players in $P_i$, but by the assumption he is "richer" then before the transfer. This results in a contradiction that M-n-m-k attains lexicographic max-min fairness. 
+\end{proof}
+
+\begin{corollary}
+For any two player $a,b$ such that $U^1_{C_a}<U^1_{C_b}$ we have $MaxPar_a(C_b)=0$. 
+\end{corollary}
+
+
+
+\begin{lemma}
+M-n-m-k is maxmin-fair.
+\end{lemma}
+
+\begin{proof}
+Wlog, let player 1 be the "poorest" among all players. Lemma \ref{lemma2} says that player 1 is independent of the consumption of other players. Since M-n-m-k maximizes the utility of player 1 under the constraints $\sum_{j=1}^{m}\alpha_{j}d_{1j}^{r}\leq R\quad\mbox{for }  1\leq r\leq K$,  M-n-m-k is maxmin fair.
+\end{proof}
+
+
+\begin{lemma} \label{lemma3}
+Let $c_1,...,c_{n}$ be the vectors allocated to all the players under M-2-m-k such that $u^1_1(c_1)\leq u^1_2(c_2)\leq...\leq u^1_{n-1}(c_{n})$. Then each player $i$ is independent of the consumption of any other player j such that $j>i$. Namely each player's utility is independent of consumption of the players "richer" than him.
+\end{lemma}
+
+\begin{proof}
+We show this by induction over the number of players. For the base case, lemma \ref{lemma1} shows that when two players are participating, the "poor" player's utility is independent of the "richer's" utility. Assume that the property holds for any set of $n-1$ players. Lemma \ref{lemma2} shows that under M-n-m-k, player 1's utility is independent of the consumption of the other players.  After M-n-m-k has allocated resources $s_1,...,s_k$ to the "poor" player, we are left with  allocating $(R-s_1,...,R-s_k)$ between the $n-1$ players, and the assumption applies to the smaller set. 
+\end{proof}
+
+
+\section*{Trading without money}
+We now consider a variant of this problem where each player $i$ is given an endowment vector $E_i^s=(e^1_i,e^2_i,...,e^k_i)$ that is known to the mechanism. Each player reports his demands to the mechanism and receive resources in return.
+We assume individual rationality, i.e., a player vetoes the allocation if the  utility is lower than the utility gained by the initial endowments. An allocation that is not vetoed by any player is called \textbf{feasible allocation}. An allocation that is vetoed by at least one of the player is called \textbf{unfeasible allocation}. We want to find a mechanism that is Pareto optimal, strategy proof, and maxmin-fair among all feasible allocations.
+
+\begin{definition}
+A mechanism M is \emph{Pareto
+dominating} if M reallocates the resources to the players if and only
+if there is an allocation A such that at least one player strictly improves
+his utility and the rest of the players' remain
+unchanged when changing the allocations from $v_1^s,...,v_n^s$
+to A. 
+\end{definition}
+
+\begin{definition}
+A mechanism is called \emph{efficient trade allocation
+(EFA) } if it is Pareto optimal, incentive compatible, and reallocating
+the resources if and only if it is Pareto dominating.
+\end{definition}
+
+
+\begin{algorithm}
+\caption{$EMFstep(I,R)$} 
+\label{alg6}
+Define $a_i=(a_{i1},...,a_{ik})\quad \forall i \in I$
+\begin{eqnarray}
+(a_{1}^{*},...,a_{n}^{*}) \leftarrow \arg\max_{a_{1},...,a_{n}}z,\quad z^*=\max_{a_{1},...,a_{n}}  z&\quad \text{(two objective functions)}\nonumber\\
+s.t. \quad \sum_{i=1}^{n}\sum_{j=1}^{m}a_{ij}d_{ij}^{r} \leq R & \ 1\leq r\leq K\\
+  U^1_i(\sum_{j=1}^{m}a_{ij}d_{ij})\geq z & \ 1\leq i \leq n\\
+    U^1_i(\sum_{j=1}^{m}a_{ij}d_{ij})\geq  U^1_i(E_i) & \ 1\leq i \leq n\\
+  0 \leq a_{ij}& \forall i,j
+\end{eqnarray}
+Where $a^*_i=(a^*_{i1},...,a^*_{ik})\quad \forall i\in I$\\
+%$h=\sum\limits_{r=1}^{k}\sum\limits_{j=1}^{m}\alpha_{j}^{*}d_{ij}^{r}\quad 1\leq i \leq n $\\
+Let $\Phi= \left\lbrace i\in I|U^1_i(\sum\limits_{j=1}^{m}a^*_{ij}d_{ij})= z^* \right\rbrace $ \\
+For each player $i\in \Phi$ allocate $\sum\limits_{j=1}^{m}a^*_{ij}d_{ij}$.\\
+$I=I\backslash \Phi$,\quad
+$V^R=V^R-\sum\limits_{i\in \Phi}\sum\limits_{j=1}^{m}a^*_{ij}d_{ij}$
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{EMF}
+\label{alg7}
+\begin{algorithmic}
+\STATE $I \gets (i_1,...,i_n)$
+\WHILE {$I\neq \emptyset$}
+\STATE $(I,V^R)\gets EMFstep(I,V^R)$
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+%TODO define function EMF_i:I\rightarrow \Delta^k
+Note that algorithm\ref{alg7} is lexicographic max-min fair.
+
+\begin{lemma}
+EMF is max-min fair.
+\end{lemma}
+
+\begin{proof}
+The only difference from mechanism EF is that players veto if their initial utilities gained by the endowments are higher then their utility gained by the allocated resources from the mechanism. If there is no allocation for the "poorest" player that provide better utility then his initial utility provided by the endowment then he votes the allocation. On the other hand, if the "poorest" player does not veto the allocation then neither the rest of the player since endowments of all players are the same but their potential utility gain is larger. 
+\end{proof}
+
+
+
+\begin{algorithm}
+\caption{EMFG (with general endowments)}
+\label{alg9}
+\begin{algorithmic}[0]
+\STATE {$I\gets (i_1,...,i_n)$}
+\WHILE {$I\neq \emptyset$}
+	\STATE $(I,V^R,\Phi)\gets EMFstep(I,V^R)$
+	\FOR {$p\in Phi$} 
+		\STATE $t\gets p$
+		\WHILE{($t>0) \& (U^1_{i_p}(C_{i_p})\leq  U^1_{i_p}(E_{i_p})$)} 
+		%	\STATE \COMMENT{if a player's utility is too with respect to his initi}
+			\STATE $Transfer(i_t,i_p)$ \COMMENT{transfer resources from the "poorer" player $i_t$ to the "richer" $i_p$}
+			\STATE $Order(i_1,...,i_t)$ \COMMENT{relabel the players by and ascending order the players' utilities}
+			\STATE $t\gets t-1$ 
+		\ENDWHILE
+		\STATE If ($t=0$) return "no feasible allocation exists" 
+	\ENDFOR
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Trasnfer($i_p,i_t$)}
+\label{alg10}
+\begin{algorithmic}[0]
+\WHILE{$U^1_{i_t}(C_{i_t})\geq  U^1_{i_t}(E_{i_t})$ and $U^1_{i_p}(C_{i_p})\leq  U^1_{i_t}(E_{i_p})$ } 
+	\FOR{j=1 to K}
+		\STATE $C_{i_t,j}=C_{i_t,j}-\epsilon$\COMMENT{substracting infinitisimal quantity of resource j from player $i_t$}
+		\STATE $C_{i_p,j}=C_{i_p,j}+\epsilon$ \COMMENT{adding infinitisimal quantity of resource j from player $i_t$}
+	\ENDFOR
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+\begin{lemma}
+The allocation of EMFG is Max-Min fair over all feasible allocations.
+\end{lemma}
+\begin{proof}
+First note that if the endowments of all players had been equal then mechanism \ref{alg9} is reduced to a simple lexicographic max-min fair as described in algorithm \ref{alg7} .
+This allocation is max-min fair since the EMF-step provides a the max-min fair allocation of all unfeasible allocation. In order to make the allocation feasible and max-min fair we take each time resources from the "richest" player out of all possible players that can "donate" resources. Note that all the "donor" are actually "poorer" than the "unsatisfied" player, since the "richer" players cannot transfer resources that improves the player's utility. This process works as follows:
+Suppose that player $t's$ utility after the "Naive" allocation (of the EMF-step) is lower than the initial utility. Then, we iteratively transfer resource from the "donors" to fill up the gap. We start with the "richest possible donor" (that is player $t-1$). We transfer resources as much as possible from player $t-1$ to player $t$ as long as player $t$ is not satisfied (and it can happen that we cannot take at all if $C_{i_{t-1}})= U^1_{i_{t-1}}(E_{i_{t-1}})$). If the gap still exists then and we iteratively transfer from player $t-2$ and so on.   If the iteration transfer resources from all players and the gap still exists then there is no feasible allocation.
+\end{proof}
+ 
+ 
+
+
+\section{Strategy Proof of EMF with no endowments}
+First, we summarize of the relevant conclusions written above: mechanism $EMF(D)$ is given a set $D$ of the reports of all players and allocate a vector of resources for each player. EMF is maxmin fair (the way it achieves the max-min fairness is not relevant to this section). In this section we assume that the only player who can manipulate is $i$, where $D_i$ refers to the true demand vectors set of $i$, and let $D'_i$ refer to a different demand vectors set that $i$ misreports. Let $D$ denote $(D_{-i},D_i)$, and $D'$ denote $(D_{-i},D'_i)$. 
+ We call $EMF(D)$ a \textit{truthful allocation}, and $EMF(D')$ a \textit{non-truthful allocation}. 
+We now give another and more explicit definition of the utility function.
+\begin{definition}\label{defUreport} 
+Let $U_{i}^{P}(T)$ be the utility function of player $i$, where $P$ is the \emph{report} vector set of the players (it can be seen as the function "assumes" that this is the true set of demand vectors), and $T$ is the constraint vector under which the function tries to optimize. Formally, given vector set $P=(P_1,...,P_n)$ of the players' reports, where each component $P_j\equiv(p_{j,1},...,p_{j,M})\in P$ is the report vector set of $j$.
+The utility function $U_{j}^{P}(T)$ is described as follows:
+\item 
+\begin{eqnarray*}
+\max_{a_{1},a_{2},...,a_{n}} & f(\sum_{m}a_{m}p_{j,m})\\
+s.t. & \sum_{m}a_{m}p_{j,m}^{r}\leq T^{r} & \ 1\leq r\leq K\\
+ & a_{m}\geq0 
+\end{eqnarray*}
+\end{definition}
+
+
+\begin{notation}
+Abusing notation, we sometimes denote $U_i^D(EMF(D))$  by $U_i(EMF(D))$.
+\end{notation}
+
+
+\begin{notation}
+Let $u_i(D)$ denote $U_i^D(EMF(D))$.
+\end{notation}
+Note that regarding the general function $U_i^{D'}(EMF(D))$, $D'$ does not have to be equal to $D$. It will be used in lemma \ref{lemmaRicher}.
+
+\begin{definition}
+The function $Poorest(\Delta^{M \times |N|},2^I)\rightarrow 2^I$ returns the set of all the "poorest" players in set I. Formally, let $I\subseteq N$ be a set of player, then $Poorest(D,I)=\{i\in I|u_i(D)\leq u_j(D), j\in N\}$
+\end{definition}
+
+\begin{definition}
+The function $Poorer_i(\Delta^{M \times |N|})\rightarrow 2^{N\backslash i}$ returns the set of all players "poorer" than $i$. Formally, $Poorer_i(D)=\{j\in N\backslash i|u_j(D)< u_i(D)\}$.
+\end{definition}
+
+\begin{definition}
+The function $WeaklyPoorer_i(\Delta^{M \times |N|})\rightarrow 2^{N\backslash i}$ returns the set of all players with equal utility or "poorer" than $i$. Formally, $Poorer_i(D)=\{j\in N\backslash i|u_j(D)\leq u_i(D)\}$.
+\end{definition}
+
+\begin{definition}
+The function $Richer_i(\Delta^{M \times |N|})\rightarrow 2^{N\backslash i}$ returns the set of all players "richer" than $i$. Formally, $Richer_i(D)=\{j\in N\backslash i|u_j(D)> u_i(D)\}$.
+\end{definition}
+
+\begin{definition}
+The function $Equal_i(\Delta^{M \times |N|})\rightarrow 2^{N\backslash i}$ returns the set of all players other than $i$ that has the same utility value as $i$. Formally, $Equal_i(D)=\{j\in N\backslash  i|u_j(D)=u_i(D)\}$.
+\end{definition}
+
+\begin{definition}
+The predicate $Only _i(\Delta^{M \times |N|})\rightarrow \{T,F\}$ is satisfied if and only if no other player $j\neq i$ has a utility value that equals $u_i(D)$.\newline  Formally, $Only_i(D)=T$ if and only if $Equal_i(D)=\emptyset$.
+\end{definition}
+
+\begin{definition}
+The function $Next_i(\Delta^{M \times |N|})\rightarrow 2^{N\backslash i}$ returns the set of players that are poorest among all the players richer than i (right next to $i$ in lexicographic order of utility). \newline 
+Formally, $Next_i(D)=Poorest(D,Richer_i(D))$.
+\end{definition}
+
+\begin{lemma}\label{lemmaIndep}
+For any $j\in Richer_i(D)$, $u_i(C_j)=0$. Namely, suppose that player $j$ transfers all his resources (or part of them) to player $i$ who is poorer than $j$ than the utility of $i$ is remained unchanged.
+\end{lemma}
+
+\begin{proof}
+For the sake of simplicity we abuse notation in this proof and denote the utility function of a player as it depends only on his allocation, e.g., $U_i(C_i)$ instead of $U_i(C_1,...,C_i,...,C_N)$ (Indeed, the utility function  of $i$ depends only on the allocation of $i$ anyway). 
+
+By contradiction, suppose that player $i$'s utility is affected by the consumption of any player $j\in Richer_i(D)$. 
+%Recall that, $u_i(D)=U^D_i(EMF(D))=U_i(C_i)$ and $u_j(D)=U^D_j(EMF(D))=U_j(C_j)$. 
+ Let $S=(s^{1},...,s^{K})$ be a resource vector (i.e., quantity $s^1$ of resource 1, quantity $s^2$ of resource 2, etc.,). What happens if $j$ transfers $S$ to $i$? Then the new allocation of 
+$i$'s utility becomes $U_{i}(C_i+S)$ and $j$'s utility becomes $U_{j}(C_j-S)$. Without loss of generality, followed by the assumption and because the constraints for $i$ becomes less tight we get $U_{i}(C_i+S)>U_{i}(C_i)$. As the constraints for $j$ becomes more tight we get $U_{j}(C_j)\geq U_{j}(C_j-S)$. However, since the utility functions are continuous in the constraints (lemma \ref{lemmaCont}),
+there exists a sufficiently small $\delta>0$ such that after $j$ transfers $\delta\cdot S$ to  $i$ (instead of S as described before) the order of utility is remained unchanged, i.e., we get $U_{j}(C_j-\delta \cdot S)>U_{i}(C_i)$. Namely, if $j$ transfers sufficiently small resource quantities to $i$, then
+his utility is still greater than $i$'s utility.  
+Recall that by the allocation of the mechanism we get $Min(U_{i}(C_i),U_{j}(C_j))=U_{i}(C_i)$, and after the "small" the transfer we get $Min(U_{i}(C_i+\delta \cdot S)),U_{j}(C_j-\delta \cdot S))=U_{i}(C_i+\delta \cdot S)$. 
+We get,
+\[
+U_{i}(C_i+\delta \cdot S)=\max[\min(U_{i}(C_i),U_{j}(C_j)),\min((U_{i}(C_i+\delta \cdot S)),U_{j}(C_j-\delta \cdot S))]
+\]
+ which without loss of generality contradicts the max-min fairness as the utility of the "poor" player (player $i$) has improved without lowering the utility of the other players (other players' utilities have not changed by the transfer) except for $j$ who is still "richer" than $i$ (to be precise not every pair of two player $i$ and $j$ contradicts the lexicographic max-min fairness, however we can always find such a pair).
+\end{proof}
+
+\begin{corollary}\label{corIndep}
+For any set of players $L\subseteq Richer_i(D)$, $u_i(C_j)=0$. Namely, suppose that player $j$ transfers all his resources (or part of them) to player $i$ who is poorer than $j$ than the utility of $i$ is remained unchanged.
+\end{corollary}
+
+
+\begin{corollary}\label{corIndep}
+The poorest player gets the same allocation as he would have got if he was the only player who participated the bidding. 
+\end{corollary}
+
+\begin{proof}
+Let $p$ be the poorest player and suppose that $Only_i(D)=T$. Followed by lemma \ref{lemmaIndep}, because $p$ is the poorest player, any other player $j$ who transfers his resources to $p$ does not change $p$'s utility. By contradiction, suppose that there is a set of players $L\subset N$ that when all players in $L$ transfer their resources to $p$
+\end{proof}
+
+
+\begin{lemma}\label{lemmaCont}
+$u_i(D)$ is continuous in $D_i$.
+\end{lemma}
+
+\begin{proof}
+Let $D'_i=(d'_{i_1},...,d'_{i_M})$. Let $\delta^r_{i,m}$ denote $|d^r_{i,m}-d^{'r}_{i,m}|$.
+ We need to show that for every $\epsilon>0$ however small, there is $\delta>0$ such that $\left\| D_i-D'_i\right\|<\delta \Rightarrow \left| u_i(D)-u_i(D')\right| <\epsilon$, where the norm $\left\|D_i-D'_i\right\|$ is defined as $\sum_r\sum_m \delta^r_{i,m}$.
+ How the allocation to player $i$ can be improved by changing the demand from $D_i$ to $D'_i$? Reducing the demand for a specific resource $r$ that is unavailable might allow the use of other resources that are available, which in turn affect the mechanism to allocate more of these resources. Formally, if we change $d^r_{i,m}$ to $d'^r_{i,m}=d^r_{i,m}-\delta^r_{i,m}$ it can increases the total allocation by at most
+ \begin{equation}\label{eqCont}
+\frac{d^r_{i,m}-d'^r_{i,m}}{d^r_{i,m}}\cdot \sum_{\hat{r}\neq r} d'^{\hat{r}}_{i,m}=\frac{\delta^r_{i,m}}{d^r_{i,m}}\cdot \sum_{\hat{r}\neq r} d'^{\hat{r}}_{i,m}
+\end{equation} 
+Similarly, the maximal decrease in allocation due to a change in the demand is the minus of (\ref{eqCont}).
+Let $L_{i,m,r}=\frac{\sum_{\hat{r}\neq r} d'^{\hat{r}}_{i,m}}{d^r_{i,m}}$ and $L=\max_{i,m,r}L_{i,m,r}$. 
+Consider $\delta=M\cdot K\cdot L$ and  $\epsilon=\delta \cdot K$. 
+Note that $\left\|D_i-D'_i\right\|  \leq \delta$.  Then,
+\begin{eqnarray}
+\left| u_i(D)-u_i(D')\right|=&\left|\sum_r EMF^r_i(D_{-i},D_i)-\sum_rEMF^r_i(D_{-i}, D'_i)\right|\\
+\leq &\sum_r \sum_m\left| a_{i,m}L_{i,m,r}\right| \\
+\leq &K\cdot M\cdot\max_{m} \left| a_{i,m}\right|\cdot\max_{m,r}\left|L_{i,m,r}\right|\\
+= &K\cdot K \cdot M \cdot L\label{eqCont2}\\
+= &\delta \cdot K=\epsilon
+\end{eqnarray}
+Where in (\ref{eqCont2}) we use the fact that $\max_{m} \left| a_{i,m}\right|\leq K$, where equality might hold when the demand is evenly split between all resources (i.e., $(\frac{1}{K},\frac{1}{K},...,,\frac{1}{K})$).  
+\end{proof}
+
+%\begin{notation}
+%Let $EMF^t$ denote the allocation that is based on true reports, i.e., $EMF(D)$.
+%\end{notation}
+%\begin{notation}
+% Let $EMF^m$ denote an allocation that is based on a misreport of player $i$ (a manipulation of $i$ that is defined by the context), where the rest of the player report their true value. Formally $EMF^m$ equals $EMD(D')$
+%\end{notation}
+
+
+
+\begin{lemma}\label{lemmaMon}
+Let $U^1=U_i^{D}(EMF(D^1))$, $U^2=U_i^{D}(EMF(D^2))$, such that $U^2>U^1$. Then, $U_i^{D}(EMF(x))$ is a monotone increasing function of x in $x\in [D^1,D^2]$. 
+\end{lemma}
+
+\begin{proof}
+First, recall that we assume that only player $i$ might manipulate, and therefore $D^1$ differs from $D^2$ only in the $i's$ report.
+Let  $D^3=\alpha D^1 +(1-\alpha)D^2$ for $0<\alpha<1$, and $U^3=U_i^{D}(EMF(D^3))$. We want to show that $U^2 \geq U^3\geq U^1$. Note that $U^1,U^2$, and $U^3$ refer to the same function, and thus to the same report. Hence, each function finds coefficients that maximizes $\sum_r\sum_m a_m d^r_{i,m}$ for the same vector set $d_i\in D_i$. The constraints for the functions are described as follows,
+\begin{eqnarray*}
+U_i^{D}(EMF(D^1)):& \sum_m a_{i,1m} d_{i,m}\leq EMF(D^1)\\
+U_i^{D}(EMF(D^2)):& \sum_m a_{i,2m} d_{i,m}\leq EMF(D^2)\\
+U_i^{D}(EMF(D^3)):& \sum_m a_{i,3m} d_{i,m}\leq EMF(\alpha D^1 + (1-\alpha)D^2)\\
+\end{eqnarray*}
+Note that these are all vector inequalities.
+
+Let $A^1=(a_{i,21},...,a_{i,2m})$ and $A^2=(a_{i,21},...,a_{i,2m})$ be the coefficients for the linear combination determined by $U^{D}(EMF(D^1))$, and $U^{D}(EMF(D^2))$ respectively. Let $\mathbb{M}=(1,...,M)$, and $\mathbb{M}^2=\left\lbrace m\in \mathbb{M}| a_{2m}\in A^2, a_{2m}>0 \right\rbrace $, i.e., $\mathbb{M}^2$ is the index set of which its corresponding vectors are "active" in $U^{D}(EMF(D^2)$ (their coefficient are larger than 0). Followed by lemma \ref{lemmaIndep}, only players with utility higher than $U^1$ (in fact only players with utilities equal to $U^2$) "uses" vectors corresponding to $\mathbb{M}^2$, i.e., for all $p\in Poorer_i(D)$ and $m^2\in \mathbb{M}^2$, $a_{p,m_2}=0$. It follows that, 
+\begin{equation}\label{eqMon}
+ U_i^{D}(EMF(D^3))>U_i^{D}(EMF((1-\alpha)D^2))
+ \end{equation}
+ due to the fact that the mechanism can allocate $EMF((1-\alpha)D^2)$ to $i$ without violating the lexicographic max-min fairness. Suppose, by contradiction, that $U^3<U^1$. The mechanism is max-min fair which means that it "tries" to attain the maximal utility as long as it does not violate the max-min fairness. But from (\ref{eqMon}) and because the allocation $EMF(D^1)$ is max-min fair, we can always find $0<B<A^1$ such that
+  \[
+  U^3\geq \sum_{3m\in B} a_{i,3m} d_{i,m}+EMF((1-\alpha)D^2)=U^1
+  \] 
+  which does not violate the max-min fairness - contradiction. Similarly, we can show that $U^3<U^2$ by claiming that if otherwise (if $U^3>U^2$), then there is a set of vectors $V$ that is "used" under constraint $EMF(D^3)$ and the mechanism can always equalize the utilities by allocating shares of $V$ to $i$ under constraint $EMF(D^2)$ without violating the max-min fairness - contradiction.
+   In the same way we can show that we can find a point $D^4$ in $[D^1,D^3]$ such that $U^3 \geq U^4\geq U^1$ and $D^5$ in $[D^3,D^2]$ such that $U^2 \geq U^5\geq U^3$. The monotonicity is achieved by continuing this process recursively throughout the whole domain.
+\end{proof}
+
+\begin{corollary}\label{corMon}
+Let  $x\in [D,D']$. $U_i^{D}(EMF(x))$ is a monotone function of $x$. 
+\end{corollary}
+
+\begin{proof}
+Followed immediately from lemma \ref{lemmaMon} (to show a monotone decrease we just switch the domain to $[D',D]$).
+\end{proof}
+
+\begin{lemma}\label{lemmaPoorer}
+Suppose that there is a set $P\subseteq WeeklyPoorer_i(D)$, such that for every $j\in P$ we have $u_i(D')<u_j(D')$, then $u_i(D')<u_i(D)$ (Namely, in case that a player misreport and as a consequence, some of the players that were poorer than him under the truthful allocation, are now richer than him under the non-truthful allocation, then the manipulation does not improve his utility). 
+\end{lemma}
+
+
+\begin{proof}
+Let $l$ be the poorest player in $P$. Formally, let $L\subset P$ be a set of  players with the following utility when $i$ manipulates:
+\[
+L=
+\begin{cases}
+Next_i(D') &\text{ if } Only_i(D')=T \\
+Equal_i(D') & \text{ Otherwise} 
+\end{cases}
+\]
+Consider the case where $Only_i(D')=T$ and $L=Next_i(D')$. Let $l\in L$.
+ By lemma \ref{lemmaIndep}, $i$ obtains all the resources he needs "before $l$'s turn". Therefore $l$ suffers a decrease in his utility (or at least not gain utility) from the manipulation of $i$ because some of the resources $l$ could have consumed when $i$ reported truthfully, are now consumed by $i$ instead (followed by lemma \ref{lemmaIndep}). This is contrast to the case when $i$ truthfully reports his demands (and his utility is higher than $l$),  $i$ obtains his resources "after" $l$'s resources are allocated (followed by lemma \ref{lemmaIndep}), and $i$ does not "lower" $l$'s utility.  Thus, $u_l(D')\leq u_l(D)$. Since $l\in WeaklyPoorer_i(D)$, $u_l(D)\leq u_i(D)$, and by the definition of utility of $l$, $u_i(D')<u_l(D')$. Therefore, by transitivity, $u_i(D')<u_i(D)$. \newline
+ We now consider the case that $Only_i(D')=F$ and $L=Equal_i(D')$. For simplicity, assume that $L$ is set of players that the mechanism achieves to equalize their utility and that they do not have the same utility "by coincidence" (we refer "coincidence" to cases such as for instance, when two players want completely different resources, and as a result do not share any resource in common, can still have the same utility although it is not necessary). When $i$ manipulates he has the same utility as the player in $L$. We can view this as "by the manipulation of $i$, player i participate the group of players with utility $u_L$". The "group of player with utility $u_L$" is larger under the non-truthful allocation than under the truthful allocation. Since this "group" shares from the same resource pool in both allocations, each player in the "larger" group obtains lower utility, i.e, for each $l'\in L$, $u_{l'}(D')<u_{l'}(D)$. Since $u_i(D')=u_{l'}(D')$, and $u_{l'}(D')\leq u_i(D)$,  we get $u_i(D')<u_(D)$. 
+\end{proof}
+
+\begin{lemma}\label{lemmaRicher}
+For all $h\in Richer_i(D)$, $u_i(D')\leq u_h(D)$, i.e, no manipulation of player $i$ can incur a utility loss to players richer than $i$ such that his utility becomes lower than the original utility of $i$.
+\end{lemma}
+\textsl{Comment: It is recommended to review definition (\ref{defUreport}) since it is heavily used in this proof.}
+\begin{proof} 
+By contradiction, suppose that there is a set $H\subseteq Richer_i(D)$ such that for every $h\in H$, $U^{D}_i(EMF(D))>U^{D'}_h(EMF(D'))$. We now show two properties that hold for $h$:
+\begin{enumerate}
+\item  $U^{D'}_h(EMF(D))>U^{D'}_i(EMF(D))$. This follows from,
+\begin{itemize}
+\item $U^{D'}_h(EMF(D))>U^{D}_i(EMF(D))$. Since $D$ differs from $D'$ only by the report of player i (and by definition $h \neq i$), we have $U^{D'}_h(EMF(D))=U^D_h(EMF(D))$. In addition, by the definition of $Richer$, $U^D_h(EMF(D))>U^D_i(EMF(D))$. 
+\item $U^{D}_i(EMF(D))>U^{D'}_i(EMF(D))$ as $D$ is the optimal report for the player $i$ given allocation $EMD(D)$. 
+\end{itemize}
+\item $U^{D'}_i(EMF(D'))>U^{D'}_h(EMF(D'))$. This follows by the assumption and from individual rationality, e.g., $U^{D'}_i(EMF(D'))>U^D_i(EMF(D))$ (player $i$ manipulates only if it improves its own utility).
+\end{enumerate}
+We now define the convex function  $EMF'(\alpha)=\alpha\cdot EMF(D)+(1-\alpha)\cdot EMF(D')$. 
+Since (1) and (2) hold and $EMF'(\alpha)$ is continuous in $\alpha$, by the intermediate theorem there exists $0<\alpha_h<1$ such that $U^{D'}_i(EMF'(\alpha_h))=U^{D'}_h(EMF'(\alpha_h))$.
+Note that for every $\alpha$, $EMF'(\alpha)$ is a valid allocation since the capacity constraints are not violated. Formally, for every resource $r$ the following holds, 
+\begin{eqnarray*}
+&\sum_{j\in N}EMF'_j(\alpha)=\sum_{j\in N} \alpha\cdot EMF^r_j(D)+(1-\alpha)\cdot EMF^r_j(D')\\
+& \alpha\sum_{j\in N} EMF^r_j(D)+(1-\alpha)\sum_{j\in N} EMF^r_j(D')\leq \alpha R + (1-\alpha) R=R
+\end{eqnarray*}
+Where the last inequality holds due to the constraints $\sum_{j\in N}EMF_j(D)\leq R$ of the $EMF$ allocation.
+ Let $EMF'_h$ denote  $EMF'(\alpha_h)$. 
+ 
+By the intermediate theorem we have, 
+\begin{eqnarray}
+U^{D'}_i(EMF'_h)>U^{D'}_i(EMF(D))\label{eq1LemmaRicher}\\
+U^{D'}_h(EMF'_h)>U^{D'}_h(EMF(D'))\label{eq2LemmaRicher}
+\end{eqnarray}
+
+Let $\hat{h}=\arg \min_hU^{D'}_h(EMF')$ (recall that $U^{D'}_h(EMF')=U^{D'}_i(EMF')$).
+Followed by corollary \ref{corMon},  $U_h^{D'}(EMF'_h(\alpha))$ is a monotone increasing function in $\alpha$ for all $h\in H$, and $U_i^{D'}(EMF'_i(\alpha))$ is a monotone decreasing function in $\alpha$.
+Therefore, player $\hat{h}$ has the minimal utility among all players in $H$ under $EMF'_{\hat{h}}$ allocation, since otherwise, by the intermediate theorem, there has to be a player $h'$ such that $U^{D'}_{h'}(EMF')<U^{D'}_{\hat{h}}(EMF')$.
+ By lemma \ref{lemmaIndep}, all players poorer than $i$ are not affected by the manipulation of $i$ , player $\hat{h}$ is the poorest player under $EMF'_{\hat{h}}$ that his utility is different than his utility under the allocation of $EMF(D')$. Therefore, player $\hat{h}$ is the player among all players for which we can determine what is more lexicographically max-min fair between the allocations $EMF(D')$ and $EMF'_{\hat{h}}$. Since $\hat{h}\in H$, we get from ($\ref{eq2LemmaRicher}$) that  $U^{D'}_{\hat{h}}(EMF'_h)>U^{D'}_{\hat{h}}(EMF(D'))$ which means that the allocation $EMF(D')$ is not max-min fair - contradiction.
+\end{proof}
+
+\begin{lemma}\label{lemmaEq}
+Suppose that for every player $j\in Poorer_i(D)$ we have $u_j(D)=u_j(D')$ (i.e., the utility of all players "poorer" than $i$ hasn't change by the manipulation). Then, $u_i(D)\geq u_i(D')$.
+\end{lemma}
+
+\begin{proof}
+Let $I_P=Poorer_i(D)$. Followed by lemma \ref{lemmaIndep}, all players "poorer" than $i$ obtain their resources they need before $i$. From the condition of the lemma, this scenario holds also after the manipulation of $i$. From lemma \ref{lemmaRicher}, all players richer than $i$ under the truthful allocation are not poorer than $i$ under the non-truthful allocation.   By contradiction, assume that $u_i(D')> u_i(D)$. Let $I_E=Equal_i(D)$. We can neglect the case where players in $I_E$ gain utility by the manipulation of $i$, since it can only happens when $u_i(D')\leq u_i(D)$ - contradiction to the assumption. Hence, $WeaklyPoorer(D)\subseteq WeaklyPoorer(D')$. However, the remaining resource pool available to $i$ under the non-truthful allocation has not increased by the manipulation. Namely, 
+\[
+V^R-(\sum_{j\in I_P}EMF_j(D')+\sum_{j\in I_E}EMF_j(D'))\leq V^R-(\sum_{j\in I_P}EMF_j(D)+\sum_{j\in I_E}EMF_j(D)) 
+\] 
+Therefore, $i$ can obtain less resources than he could have without manipulation and this consequently leads to lower utility - contradiction. 
+\end{proof}
+
+\begin{theorem}
+EMF with no endowments is strategy proof.
+\end{theorem}
+
+\begin{proof}
+Let  $j\in WeaklyPoorer_i(D)$. In the case that $i$ misreport $D'$ and as a consequence, $i$ reaches to a point where $u_j(D')>u_i(D')$, then by lemma \ref{lemmaPoorer}, we have $u_i(D)>u_i(D')$.
+Otherwise, followed by lemma \ref{lemmaRicher} we get $Poorer_i(D)=Poorer_i(D')$,  as the following properties hold:
+\begin{enumerate}
+\item Any player $h\in Richer_i(D)$ is not poorer than $i$ under the non-truthful  allocation (lemma \ref{lemmaRicher}).
+\item $i$ cannot affect the utility of other players by manipulation as long as they remain poorer than him (lemma \ref{lemmaCont}).
+\end{enumerate}
+Therefore, the condition of lemma \ref{lemmaEq}  holds and we get  $u_i(D)\geq u_i(D')$.
+Thus,  $u_i(D)\geq u_i(D')$ is always satisfied since it holds in the two complementary cases.
+\end{proof}
+
+
+
+
+
+\section{EMF with equal endowments (EMFQ)}
+In this section, each player has a private endowment vector $V^E=(E,...,E)$. A player vetoes an allocation if the resources received by mechanism are not better than the resources of the private endowment. Formally, a player vetoes if and only if $U_i(V^E)>U_i(EMD(D))$. An allocation is called \textit{feasible} if no player has the incentive to veto such allocation. Without loss of generality let $(1,...,n)$ be a sequence of players that is ordered by their utility under EMF, i.e., $u_i(D)> u_j(D)$ if and only if $i>j$. Note that under this representation, player $1$ is the poorest (or in the set of the poorest players) and player $n$ is the richest. 
+
+\begin{notation}
+Let $V^R$ denote the $k$-vector $(R,...,R)$ and $V^E$ denote the $k$-vector $(E,...,E)$. 
+\end{notation}
+
+
+\begin{definition}
+Let $EMF(D,V^R)$ be a max-min fair mechanism that allocates resources from a resource pool $V^R$ given that the demand vector set of all players is $D$. 
+\end{definition}
+
+%\begin{notation}
+%Let $u^E_i(D)$ denote $U_i^D(EMFQ(D)$.
+%\end{notation}
+
+\begin{definition}
+Let $EMFQ(D,V^E)$ be a max-min fair mechanism over demand vector set $D$ and private endowment $V^E$ for each player such that it returns the allocation that is lexicographic max-min fair out of all feasible allocations (Clearly, if there is no feasible allocation than the mechanism does nothing).
+\end{definition}
+
+
+
+
+\begin{algorithm}
+\caption{CheckPoorest}
+\label{algEMFQ}
+\begin{algorithmic}[0]
+\IF {$U^D_n(V^E)>U^D_n(EMF(D))$}
+\STATE {return "the allocation is vetoed"}
+\ELSE 
+\STATE {return the EMF(D) allocation}
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+
+Abusing notation, we now use the same definitions as presented in the previous section but now will refer to EMFQ (instead of EMF). 
+
+\begin{lemma}
+The mechanism described in algorithm \ref{algEMFQ} is EMFQ.
+\end{lemma}
+
+
+%\begin{proof}
+%Let $P=Poorest(D,N)$. Followed by mechanism EMFQ, player $p\in P$ does not veto if $u^e_p(D)<u^e_p(R)$. Indeed, by lemma \ref{lemmaIndep}, all players in $P$ play first (and get the same utility) and there is no way for the mechanism to allocate more resources to $p$ that can improve its utility. 
+%\end{proof}
+
+\begin{proof}
+We show that algorithm \ref{algEMFQ} is EMFQ by showing that if the richest player does not veto the EMF allocation then neither the rest of the players will veto. We show this by induction. First, the base case is explicitly checked (by checking that $U_n(V^E)>U_n(EMD(D))$). Now, we assume that player $i$ does not veto and we need to show that player $i-1$ does not veto as well.
+For any player $i$ let $\delta_i$ denote $U_i(EMF(D))-U_i(V^E)$ and let $\alpha_i$ denote $\frac{U^D_i(V^E)}{U^D_i(V^R)}$. Note that $i$ vetoes if and only if $\delta_i>0$.
+Let $\Delta_i=\delta_i-\delta_{i-1}$.   Followed by assumption, 
+\begin{equation}\label{eq1EMFQ}
+U^D_{i-1}(EMF(D))\geq \alpha_{i-1}\cdot U^D_{i-1}(V^E).
+\end{equation}
+Reformulation (\ref{eq1EMFQ}) with equality, 
+\begin{equation}\label{eq2EMFQ}
+ U^D_{i-1}(V^E)= \alpha_{i-1} \cdot [U^D_{i-1}(EMF(D))+T]\quad \text{for } T\geq 0.
+\end{equation}
+Assume there is a vector $V$ that both player $i$ and $i-1$ can benefit from, i.e., $U^D_{i}(V)>0$ and $U^D_{i-1}(V)>0$, and suppose that EMF allocates $V$ to $i-1$ (i.e., $C_{i-1}-V>0$). Since $i=Richer_{i-1}(D)$, it follows by corollary \ref{corIndep} that $i$ gets no fraction of $V$.
+Since player $i$ can also benefit from $V$ we have,
+\begin{equation}
+U^D_i(V^E)\geq \alpha_i\cdot [U^D_{i}(EMF(D))+T+U^D_{i-1}(V)]
+\end{equation}
+
+\end{proof}
+
+
+\section{EMF with general endowments (EMFG)}
+In this section each player $j\in N$ has a private endowment vector $V_j^E=(E_j^1,...,E_j^k)$. Let $V^E=(V_1^E,V_2^E,...,V_n^E)$ denote the endowment vector set of all players. Note that $U^D_j(V^E)$ is the utility of $j$ given that the report is D and $j$ obtains a resource vector $V_j^E$ (the utility here is gained without the influence of the mechanism).  
+  A player vetoes an allocation if the resource vector received by mechanism is not better than the resource vector of the private endowment. Formally, player $j$ vetoes if and only if $U^D_j(V^E)>U^D_j(EMD(D))$. An allocation is called \textit{feasible} if no player has the incentive to veto such allocation. Without loss of generality let $(1,...,n)$ be a sequence of players that is ordered by their utility under EMF, i.e., $u_i(D)> u_j(D)$ if and only if $i>j$. Note that under this representation, player $1$ is the poorest (or in the set of the poorest players) and player $n$ is the richest. 
+
+\begin{definition}
+Player $j$ is \textit{satisfied} if $u_j(D)\geq U^D_j(V^E)$ (i.e, $j$ has no inventive to veto). On the other hand, $j$ is \textit{not-satisfied} if $u_j(D)<U^D_j(V^E)$ (i.e, $j$ vetoes).
+\end{definition}
+
+
+\begin{definition}
+Let $EMFG(D,V^E)$ be a max-min fair mechanism such that it returns the allocation that is lexicographic max-min fair out of all feasible allocations (Clearly, if there are no such allocations than the mechanism does not allocate). 
+\end{definition}
+
+\begin{notation}
+Abusing notation, let $u_j(D,V^E)$ denote $u_j(EMFG(D,V^E))$.
+\end{notation}
+
+\begin{definition}
+Player $j$ is called \textit{donor} if $u_j(D)<u_j(D,V^E)$, i.e., player $j$ is a donor if there is another $h$ player, such that EMFG "transfers" $j$'s resources to $h$ in order that $h$ will be satisfied.  
+\end{definition}
+
+\begin{lemma}
+Given that $i$ is not a donor then no manipulation improves the utility of $i$ (i.e., $u_i(D,V^E)>u_i(D',V^E)$). 
+\end{lemma} 
+
+\begin{proof}
+Since $i$ is not a donor, $i$ can improve his utility only by forcing the mechanism to "take" resources from poorer players (and maybe from richer players as well). (--- maybe the previous sentenced is supposed to be in a main theorem---). By contradiction suppose that $u_i(D^{'},V^E)>u_i(D,V^E)$. Let $\hat{D}(\alpha)=\alpha\cdot D^{'}+(1-\alpha)\cdot D$. First, consider the case in which $u_i(D)\geq U^D_i(V^E)$ ($i$ is satisfied). By lemma \ref{lemmaMon}, for every $\alpha$ we have  $U^{D^{'}}_i(EMFG(\hat{D}(\alpha),V^E)>U^D_i(V^E)$. Thus, for every $\hat{D}\in [D,D^{'}]$ we have $u_i(\hat{D}(\alpha))>U^D_i(V^E)$. By lemma \ref{lemmaIndep} the utilities of all players poorer than $i$  are remained constant as a function of $\hat{D}(\alpha)$ (i.e., for $p\in Poorer_i(D)$, we have $u_p(\hat{D}(\alpha),V^E)=C$ for all $\alpha\in [0,1]$). This means players poorer than $i$ consume the same resources in EMFG$(D,V^E)$ and EMFG$(D^{'},V^E)$ and that the available resource pool for $i$ in $\hat{D}(0)$ and $\hat{D}(1)$ is equal and therefore $u_i(D,V^E)=u_i(D^{'},V^E)$. Consider now the case that $u_i(D)<U^D_i(V^E)$ ($i$ is not satisfied). By lemma \ref{lemmaMon}, $U^{D^{'}}_i(\hat{D}(\alpha))$ increases as $\alpha$ gets larger. From lemma \ref{lemmaCont} there is $\alpha'$ such that $U^{D^{'}}_i(\hat{D}(\alpha'))=U^D_i(V^E)$. Using the same argument as in the previous case (where $U^{D^{'}}_i(\hat{D}(\alpha'))$ is constant as $\alpha$ gets larger for every $\alpha\geq \alpha'$ ), we get \[
+U^{D^{'}}_i(\hat{D}(\alpha))=u_i(D',V^E)=U^{D'}_i(V^E)
+\]
+ for every $\alpha\geq \alpha'$. By lemma \ref{}, $U^{D'}_i(V^E)<U^D_i(V^E)$. 
+In the truthful allocation we have $u_i(D,V^E)=U^D_i(V^E)$ (lemma \ref{}). Hence, we get $u_i(D',V^E)=u_i(D,V^E)$.
+\end{proof}
+
+\begin{definition}
+Let $Min:\mathbb{R}^\mathbb{N}\times \mathbb{R}^\mathbb{N}\rightarrow \mathbb{R}^\mathbb{N}$ be a function that return the maximal vector that is "contained" in two vectors. Formally, $Min(V_1,V_2)=\max_{V\in \mathbb{R}^\mathbb{N}}V$ such that $V\leq V_1$ and $V\leq V_2$. 
+
+\end{definition}
+
+\begin{definition}
+Let $i$ be a player such that $EMF_i(D)\geq EMFG_i(D,V^E)$ and  $j$ be a player such that $EMFG_j(D,V^E)\geq EMF_j(D)$. Let  $R_i$ denote $EMF_i(D)- EMFG_i(D,V^E)$ and $R_j$ denote $EMFG_j(D,V^E)- EMF_j(D)$. We define the function $Transfer(i,j,D,V^E)\equiv Min(R_i,R_j)$.
+We say that the vector $R_{ij}= Transfer(i,j,D,V^E)$ is the transfer from $i$ to $j$.  We say that $i$ donates $R_{ij}$ to $j$, and $j$ takes $R_{ij}$ from $i$.
+\end{definition} 
+
+\subsection{Counter Example}
+We now show that ENFG is not strategy proof by presenting a counter example.
+Let $R=(3,3,3)$. The demand set of $1$ and $2$ is $D=(D_1,D_2)$ where $D_1=\{D_{11}=(1,0,0),D_{12}=(0,0,1)\}$ and $D_2=(\frac{1}{2},\frac{1}{2},0)$. The endowment vector is $V^E=(V_1^E,V_2^E)$ where $V^E_1=(3,3,0)$ and $V^E_2=(0,0,0)$ are the endowments of $1$ and $2$ respectively. 
+\begin{enumerate}
+\item The utility of $1$ from the initial endowments $U_1^D(V_1^E)=U_1^D(3,3,0)=U_1^D(3\times D_{11})=U_1^D(3,0,0)=3+0+0=3$.
+\item The utility of $2$ from the initial endowments $U_1^D(V_2^E)=U_1^D(3,3,0)=U_1^D(\emptyset)=0$.
+\end{enumerate}
+From $(1)$ we have the constraint $EMFG_1(D,V^E)\geq 3$, and from $(2)$ we have $EMFG_2(D,V^E)\geq 0$.
+These constraint are only lower bound and the allocation is not affected by them since we can achieve 
+utility of $4$ for both players by the following allocation
+\begin{eqnarray*}
+EMFG_1(V^E,D)=&1\times D_{11}+3\times D_{12}=1\times (1,0,0)+3\times(0,0,3)=(1,0,3)\\
+EMFG_2(V^E,D)=&4\times D_2=4\times (\frac{1}{2},\frac{1}{2},0)=(2,2,0)
+\end{eqnarray*}
+ 
+Where their utilities are given by
+$U_1^D(EMFG_1(V^E,D))=1+0+3=4$ and $U_2^D(EMFG_2(V^E,D))=2+2+0=4$.
+We now check what happen when player $1$ manipulates. In this case the misreport of player $1$ is only adding another vector $D_{13}=(\frac{1}{2},\frac{1}{2},0)$, i.e., we now have  $D'_1=\{D_{11}=(1,0,0),D_{12}=(0,0,1),D_{13}=(\frac{1}{2},\frac{1}{2},0)\}$. Let $D'=(D'_1,D_2)$.
+The utility of $1$ from the endowment is now, $U_1^{D'}(V_1^E)=U_1^{D'}(3,3,0)=U_1^{D'}(6\times D_{13})=U_1^{D'}(3,3,0)=3+3+0=6$.
+Since $2$ does not misreport, the utility of player $2$ from the endowment is remained unchanged.
+Hence, the constraint for $1$ when he manipulates is $U_1^{D'}(EMFG_1(D',V^E))\geq 6$.
+\section{Additional Proofs}
+\begin{lemma}
+Suppose $i$ misreports $D'$ such that $Poorer_i(D)=Poorer_i(D')$ (i.e., the set of players poorer than $i$ in the true report is the same as if $i$ misreport $D'$). Then, the allocation of each player in $i$ is remained unchanged.
+\end{lemma}
+\begin{proof}
+By contradiction, suppose that there is a non empty set $L=\{l\in J|u_j(D)\neq u_j(D')\}$ of players who do not gain the sane utility (due to different allocation). Let $p$ be the poorest player in $L$ under the truthful allocation $D$. If $u_p(D)>u_p(D')$ then $p$ is also the poorest player in $L$ under the non truthful allocation and thus by lemma \ref{sequential} 
+
+%Clearly, the utility of $p$ under $EMF(D')$ allocation cannot be lower than the utility of $p$ under $EMD(D')$ since the rest of the players are poorer  
+is player $j$ who obtains $C_j$ when players report $D$, and $C'_j$ when players report $D'$.
+Let $p$ be the poorest player 
+\end{proof}
+\end{document}
+
+
